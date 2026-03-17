@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taxi Fare App</title>
+<style>
+
+    body {
+
+        margin: 0;
+
+        font-family: Arial, sans-serif;
+
+        background: #121212;
+
+        color: white;
+
+    }
+
+    .app {
+
+        max-width: 400px;
+
+        margin: auto;
+
+        padding: 20px;
+
+    }
+
+    .card {
+
+        background: #1e1e1e;
+
+        padding: 20px;
+
+        border-radius: 15px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+
+    }
+
+    h2 {
+
+        text-align: center;
+
+        margin-bottom: 20px;
+
+    }
+
+    select, input {
+
+        width: 100%;
+
+        padding: 12px;
+
+        margin: 10px 0;
+
+        border-radius: 10px;
+
+        border: none;
+
+        font-size: 16px;
+
+    }
+
+    button {
+
+        width: 100%;
+
+        padding: 15px;
+
+        border: none;
+
+        border-radius: 10px;
+
+        background: #00c853;
+
+        color: white;
+
+        font-size: 18px;
+
+        margin-top: 10px;
+
+        cursor: pointer;
+
+    }
+
+    button:hover {
+
+        background: #00b248;
+
+    }
+
+    .result {
+
+        margin-top: 20px;
+
+        font-size: 22px;
+
+        text-align: center;
+
+        color: #00e676;
+
+    }
+
+    .label {
+
+        margin-top: 10px;
+
+        font-size: 14px;
+
+        opacity: 0.8;
+
+    }
+</style>
+</head>
+<body>
+<div class="app">
+<div class="card">
+<h2>🚖 Taxi Fare</h2>
+<div class="label">Trip Type</div>
+<select id="tripType">
+<option value="booking">Booking Taxi</option>
+<option value="normal">Normal Taxi</option>
+<option value="other">Other Emirates</option>
+</select>
+<div class="label">Distance (KM)</div>
+<input type="number" id="distance" placeholder="Enter KM">
+<div class="label">Waiting Time (minutes)</div>
+<input type="number" id="waiting" placeholder="Enter minutes">
+<button onclick="calculateFare()">Calculate</button>
+<div class="result" id="result">AED 0.00</div>
+</div>
+</div>
+<script>
+
+function calculateFare() {
+
+    let type = document.getElementById("tripType").value;
+
+    let distance = parseFloat(document.getElementById("distance").value) || 0;
+
+    let waiting = parseFloat(document.getElementById("waiting").value) || 0;
+
+    // Rates
+
+    let baseFare = 0;
+
+    let perKm = 0;
+
+    let minFare = 0;
+
+    let waitingRate = 0.5; // AED per minute
+
+    if (type === "booking") {
+
+        baseFare = 8;
+
+        perKm = 1.7;
+
+        minFare = 12;
+
+    } 
+
+    else if (type === "normal") {
+
+        baseFare = 4;
+
+        perKm = 1.7;
+
+        minFare = 8;
+
+    } 
+
+    else if (type === "other") {
+
+        baseFare = 0;
+
+        perKm = 1.4;
+
+        minFare = 15;
+
+    }
+
+    let fare = baseFare + (distance * perKm) + (waiting * waitingRate);
+
+    // Apply minimum fare
+
+    if (fare < minFare) {
+
+        fare = minFare;
+
+    }
+
+    document.getElementById("result").innerText = "AED " + fare.toFixed(2);
+
+}
+</script>
+</body>
+</html>
+ 
