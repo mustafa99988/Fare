@@ -53,10 +53,16 @@ button {
     color: white;
     font-size: 16px;
     margin-top: 10px;
+    cursor: pointer;
 }
 
 .whatsapp {
     background: #25D366;
+}
+
+.lang-btn {
+    background: #2196f3;
+    margin-bottom: 10px;
 }
 
 .result {
@@ -80,10 +86,12 @@ button {
 <div class="app">
 <div class="card">
 
-<h2>🚖 Car Lift UAE</h2>
+<button class="lang-btn" onclick="toggleLang()">🌐 عربي / English</button>
+
+<h2 id="title">🚖 Car Lift UAE</h2>
 
 <select id="tripType" onchange="toggleRoute()">
-    <option value="booking">Booking Car Lift</option>
+    <option value="booking">Booking Carlift</option>
     <option value="other">Other Emirates</option>
 </select>
 
@@ -94,22 +102,22 @@ button {
 
 <div id="routeSection" style="display:none;">
     <select id="route">
-        <option value="50">Dubai → Sharjah (60 AED)</option>
-        <option value="170">Dubai → Abu Dhabi (250 AED)</option>
-        <option value="70">Dubai → Ajman (100 AED)</option>
-        <option value="120">Dubai → Ras Al Khaimah (150 AED)</option>
-        <option value="160">Dubai → Fujairah (190 AED)</option>
-        <option value="170">Dubai → Al Ain (200 AED)</option>
+        <option value="50">Dubai → Sharjah (70 AED)</option>
+        <option value="170">Dubai → Abu Dhabi (200 AED)</option>
+        <option value="70">Dubai → Ajman (85 AED)</option>
+        <option value="120">Dubai → Ras Al Khaimah (130 AED)</option>
+        <option value="160">Dubai → Fujairah (180 AED)</option>
+        <option value="170">Dubai → Al Ain (190 AED)</option>
     </select>
 </div>
 
-<button onclick="calculateFare()">Calculate Fare</button>
+<button onclick="calculateFare()" id="calcBtn">Calculate Fare</button>
 
 <div class="result" id="result">AED 0.00</div>
 
-<button class="whatsapp" onclick="sendWhatsApp()">📱 Check Availability Over WhatsApp</button>
+<button class="whatsapp" onclick="sendWhatsApp()" id="waBtn">📱 Check Availability Over Whatsapp</button>
 
-<div class="small">WhatsApp: +971505402261</div>
+<div class="small" id="phone">WhatsApp: +971505402261</div>
 
 </div>
 </div>
@@ -117,6 +125,7 @@ button {
 
 <script>
 let finalFare = 0;
+let currentLang = "en";
 
 function toggleRoute() {
     let type = document.getElementById("tripType").value;
@@ -150,13 +159,43 @@ function calculateFare() {
 
 function sendWhatsApp() {
     if (finalFare === 0) {
-        alert("Please calculate fare first");
+        alert(currentLang === "en" ? "Please calculate fare first" : "احسب السعر أولاً");
         return;
     }
 
-    let message = "Hello, I want to book a ride. Estimated Fare: AED " + finalFare;
+    let message = currentLang === "en" 
+        ? "Hello, I want to book a ride. Estimated Fare: AED " + finalFare
+        : "مرحبا، أريد حجز رحلة. السعر المتوقع: " + finalFare + " درهم";
+
     let url = "https://wa.me/971505402261?text=" + encodeURIComponent(message);
     window.open(url, "_blank");
+}
+
+function toggleLang() {
+    if (currentLang === "en") {
+        currentLang = "ar";
+        document.documentElement.dir = "rtl";
+
+        document.getElementById("title").innerText = "🚖 خدمة توصيل";
+        document.getElementById("calcBtn").innerText = "احسب السعر";
+        document.getElementById("waBtn").innerText = "📱 تواصل لمعرفه امكانيه الحجز";
+        document.getElementById("phone").innerText = "واتساب: +971505402261";
+
+        document.getElementById("distance").placeholder = "المسافة (كم)";
+        document.getElementById("waiting").placeholder = "وقت الانتظار (دقائق)";
+
+    } else {
+        currentLang = "en";
+        document.documentElement.dir = "ltr";
+
+        document.getElementById("title").innerText = "🚖 Car Lift UAE";
+        document.getElementById("calcBtn").innerText = "Calculate Fare";
+        document.getElementById("waBtn").innerText = "📱 Book via WhatsApp";
+        document.getElementById("phone").innerText = "WhatsApp: +971505402261";
+
+        document.getElementById("distance").placeholder = "Distance (KM)";
+        document.getElementById("waiting").placeholder = "Waiting Time (minutes)";
+    }
 }
 </script>
 
