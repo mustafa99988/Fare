@@ -147,7 +147,7 @@ function calculateFare() {
         let baseFare = (type === "booking") ? 8 : 4;
         let perKm = 2;
         let minFare = (type === "booking") ? 12 : 8;
-        let waitingRate = 0.0;
+        let waitingRate = 0.007;
 
         fare = baseFare + (distance * perKm) + (waiting * waitingRate);
 
